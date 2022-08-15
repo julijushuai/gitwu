@@ -1,0 +1,25 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.6
+Creation-Date: 2022-05-25T09:38:41+08:00
+
+====== next  stadiy ======
+Created 星期三 25 五月 2022
+
+记录一些接下来要学的东西。
+
+ls -l /proc/PID号/fd    查看进程的fd
+cat /proc/PID号/status    查看进程状态信息
+
+
+
+cppcheck    一个查看程序静态警告、错误的工具。
+第三方库：
+
+内核双链表--》 list_head
+单链表--》 hash表
+
+
+2022年6月21日17:17:22
+	在ip.c中ip_record  ？？？？？？？？？？？
+	
+	

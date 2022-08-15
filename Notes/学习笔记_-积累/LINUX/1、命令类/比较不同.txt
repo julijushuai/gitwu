@@ -1,0 +1,30 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.6
+Creation-Date: 2022-05-28T15:34:59+08:00
+
+====== 比较不同 ======
+Created 星期六 28 五月 2022
+[[https://www.cnblogs.com/f-ck-need-u/p/9071033.html|源网站]]
+**方法一：使用diff**
+		diff -r  directory1 directory2
+
+**方法二：使用diff结合tree**
+		diff <(tree -Ci --noreport [[/xx/xx/xx)]]  <(tree -Ci --noreport [[/xx/xx/xx)]]
+	
+	说明：
+	tree的-C选项是输出颜色，如果只是看一下目录的不同，可以使用该选项，但在结合其他命令使用的时候建议不要使用该选项，因为颜色也会转换为对应的编码而输出；
+	
+	-i是不缩进，建议不要省略-i，否则diff的结果很难看，也不好继续后续的文件操作；
+	
+	--noreport是不输出报告结果，建议不要省略该选项。
+	
+	该方法效率很高。
+
+**方法三：find结合diff**
+		find directory1 -printf "%P\n" | sort > file1
+		find directory2 -printf "%P\n" | sort | diff file1 -
+		2d1
+		< 1.png
+		4a4
+		> 4.png
+

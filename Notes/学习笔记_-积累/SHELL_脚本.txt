@@ -1,0 +1,51 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.6
+Creation-Date: 2022-06-07T15:21:43+08:00
+
+====== SHELL 脚本 ======
+Created 星期二 07 六月 2022
+
+[[https://www.runoob.com/linux/linux-shell.html|shell脚本教程]]
+
+**shell环境**
+	Shell 编程跟 JavaScript、php 编程一样，只要有一个能编写代码的文本编辑器和一个能解释执行的脚本解释器就可以了。
+	Linux的Shell种类众多，常见的有：
+		Bourne Shell（/usr/bin/sh或/bin/sh）
+		Bourne Again Shell（/bin/bash）
+		C Shell（/usr/bin/csh）
+		K Shell（/usr/bin/ksh）
+		Shell for Root（/sbin/sh）
+		······
+**__所有的笔记均围绕Bash，即Bourne Again Shell__**
+
+**第一个shell脚本**
+	打开文本编辑器(可以使用 vi/vim 命令来创建文件)，新建一个文件 test.sh，扩展名为 sh（sh代表shell），扩展名并不影响脚本执行，__见名知意就好__，如果你用 php 写 shell 脚本，扩展名就用 php 好了。
+	
+	实例：
+		#！/bin/bash   
+		echo "Hello World !"
+	说明:
+		#! 是一个约定的标记，他告诉系统这个脚本需要使用什么解释器来执行，即使用哪一种shell
+		echo 命令用于向窗口输出文本
+
+**运行脚本的两种方式**
+	将上述文本保存为test.sh 。
+	1、给脚本文件添加可执行权限，然后 [[./]]  执行
+		如：
+			chmod +x [[ .]] /test.sh  #使脚本具有执行权限
+			. /test.sh  #执行脚本
+		注意：
+			注意，第一行的添加权限一定要写成 ./test.sh，而不是 test.sh，运行其它二进制的程序也一样，直接写 test.sh，linux 系统会去 PATH 里寻找有没有叫 test.sh 的，而只有 /bin, /sbin, /usr/bin，/usr/sbin 等在 PATH 里，你的当前目录通常不在 PATH 里，所以写成 test.sh 是会找不到命令的，要用 ./test.sh 告诉系统说，就在当前目录找。
+	
+	2、作为参数解释器的参数
+		即直接运行解释器，其参数就是shell脚本的文件名，
+		如：
+			/bin/sh test.sh   	#vi/vim写的脚本
+			/bin/php test.php	#php 写的脚本
+
+	注意：这种方式运行的脚本，不需要在第一行指定解释器信息，写了也没有用。
+	
+	
+
+
+

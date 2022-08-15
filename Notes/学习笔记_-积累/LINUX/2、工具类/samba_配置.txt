@@ -1,0 +1,28 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.6
+Creation-Date: 2022-08-10T09:36:29+08:00
+
+====== samba 配置 ======
+Created 星期三 10 八月 2022
+
+1、安装samba
+	sudo apt-get install 
+2、配置samba
+	路径：/etc/samba/smb.conf
+
+开始：
+	复制以下代码至文件末尾，并进行适当的修改
+
+	[code]	
+	path = /home/zhengquan/code     	#路径
+	public =  yes							
+	writable = yes					#写权限
+	directory mask = 0775        		#文件夹的权限
+	force directory mask = 0755
+	create mask = 0664
+	force create mask = 0664
+	valid users = root,zhengquan
+	write list = root,zhengquan    		#可写用户列表
+	available = yes
+	browseable = yes                 		#网络邻居
+	security = user

@@ -1,0 +1,37 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.6
+Creation-Date: 2022-06-21T15:20:32+08:00
+
+====== 1、2022.6.21 ======
+Created 星期二 21 六月 2022
+
+1、int sigemptyset(sigset_t *set);
+	将指定的信号集合set初始化为空，并排除该信号中的所有信号。
+
+2、 int sigprocmask(int how, const sigset_t *set, sigset_t *oldset)
+	Sigprocmask()用于获取和/或更改调用线程的信号掩码。 信号掩码是一组信号，其传输目前为调用者被阻止
+
+
+2、uloop_init 
+	[[学习笔记 -积累:第三方库:libubox:uloop.c  .h]]
+
+3、宏ARRAY_SIZE，是求设备结构体中设备的个数，
+	定义在linux/kernel.h中
+	#define ARRAY_SIZE(arr) (sizeof(arr)/sizeof((arr)[0]) + __must_be_array(arr))
+	sizeof(arr)/sizeof((arr)[0])是求出设备的个数，__must_be_array(arr)是防止被吴用，比如用指针而不是数组上
+
+4、int signalfd(int fd, const sigset_t *mask, int flags);
+	#include <sys/signalfd.h>
+	Signalfd()创建一个文件描述符，可用于接收针对调用方的信号。 这提供了一种替代信号处理程序或sigwaitinfo(2)的方法，其优点是可以通过select(2)、poll(2)和epoll(7)监控文件描述符。 
+
+5、access 
+	#include <unistd.h>
+	 int access(const char *pathname, int mode);
+	检查调用进程是否可以访问文件路径名。 如果pathname是一个符号链接，它将被解除引用 
+6、随机数产生函数rand（void）的使用
+	列子：
+	1）如果想要表示一个数是从0开始到最大值的，比如说，想要产生一个0-99之间的随机数，那么用法如下。
+		int num = rand() % 100；
+	2）如果想要产生一个数是从1开始到最大值的，比如说，想要产生一个1-100之间的随机数，那么用法如下。
+		int num = rand() % 100 + 1;
+

@@ -1,0 +1,44 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.6
+Creation-Date: 2022-05-28T16:49:24+08:00
+
+====== C调用linux终端命令 ======
+Created 星期六 28 五月 2022
+
+
+**方法1: system ( )**
+	头文件： #include<stdlib.h>
+	定义函数：int system (const char * string) ;
+	
+	描述：
+		system()会调用fork()产生一个子历程，由子历程来调用/bin/sh-c string来履行 __参数string字符串所代表的命令__，此命令履行 完后随即返回原调用的历程。
+		
+	
+	返回值：如果system()调用成功则最后会返回执行shell命令后的返回值;
+		调用/bin/sh时失败  →  127
+		其他失败原因         →  -1
+		因此最好能再检查errno 来确认执行成功。
+		
+	注意：
+		在调用system()期间SIGCHLD 信号会被暂时搁置，SIGINT和SIGQUIT 信号则会被漠视 。所以在编写具有SUID / SIGQUIT  信号时不要使用此函数。
+
+**方法2:  popen(char *command,char *type) **
+	头文件：
+	定义函数：
+	
+	描述：
+	popen()会调用fork()产生子进程，然后从子进程中调用/bin/sh -c来执行参数__command的指令__。__参数type可使用“r”代表读取，“w”代表写入__。依照此type值，popen()会建立管道连到子进程的标准输出设备或标准输入设备，然后返回一个文件指针。随后进程便可利用此文件指针来读取子进程的输出设备或是写入到子进程的标准输入设备中。此外，__所有使用文件指针(FILE*)操作的函数也都可以使用，除了fclose()以外。__
+	
+	返回值：
+		成功  →  文件指针
+		失败  →  NULL
+		
+	注意：
+		在编写具SUID/SGID权限的程序时请尽量避免使用popen()，__popen()会继承环境变量__，通过环境变量可能会造成系统__安全的问题。__
+
+
+**方法3：exec**
+	需要你自己 fork 进程，然后exec 自己的命令；
+
+
+

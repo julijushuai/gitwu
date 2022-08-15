@@ -1,0 +1,24 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.6
+Creation-Date: 2022-08-12T13:49:29+08:00
+
+====== 其他MII ======
+Created 星期五 12 八月 2022
+
+**MII命名是有一定规律的，比如G代表1000兆，XG代表10G（万兆），R代表减少引脚，S代表串行通信，例如，RGMII就是减少引脚的1000兆MII总线，SGMII就是串行通信的1000兆MII总线。**
+
+**1.MII接口模式是支持10/100兆。**
+{{.\pasted_image.png}}
+**2.RMII：MAC和PHY芯片之间的接线图，数据线相比MII减半,时钟为50MHZ,还是需要注意TX_CLK是由phy芯片发出,如果是需要自适应10/100M。**
+{{.\pasted_image001.png}}
+ **3.SMII：10/100M**
+{{.\pasted_image002.png}}
+**4. GMII：对应为千兆网；要实现1000Mb/s、100Mb/S、10Mb/S自适应必须加上TX_CLK（PHY输出）**
+{{.\pasted_image003.png}}
+5.RGMII
+
+{{.\pasted_image004.png}}
+ 6.SGMII：
+{{.\pasted_image005.png}}
+7.XGMII:10G，万兆。
+{{.\pasted_image006.png}}

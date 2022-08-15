@@ -1,0 +1,20 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.6
+Creation-Date: 2022-05-26T14:16:07+08:00
+
+====== vim调试工具 ======
+Created 星期四 26 五月 2022
+	在此之前
+	vim与编译器的接口：quickfix
+	vim与调试器的接口：netbeans 只能在gvim中使用，使用vimgdb补丁，可在终端的vim中使用调试。
+
+**1、GDB**
+	学习源网站：[[https://zhuanlan.zhihu.com/p/297925056|GDB使用详解]]
+
+	**GDB调试主要有三种方式：**
+	1、直接调试目标程序：gdb ./hello_server
+	2、附加进程id：gdb attach pid
+	3、调试core文件：gdb filename corename
+	**退出GDB**
+	1、可以用命令：q（quit的缩写）或者 Ctr + d 退出GDB。
+	2、如果GDB attach某个进程，退出GDB之前要用命令 detach 解除附加进程。

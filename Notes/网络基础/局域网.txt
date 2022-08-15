@@ -1,0 +1,8 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.6
+Creation-Date: 2022-08-10T14:13:12+08:00
+
+====== 局域网 ======
+Created 星期三 10 八月 2022
+
+主要对接与OSI参考模型的物理层和数据链路层，也是TCP/IP的网络接口层。

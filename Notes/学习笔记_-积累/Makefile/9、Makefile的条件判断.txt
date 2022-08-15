@@ -1,0 +1,49 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.6
+Creation-Date: 2022-06-10T15:57:46+08:00
+
+====== 9、Makefile的条件判断 ======
+Created 星期五 10 六月 2022
+
+**解决分条件执行的情况**
+
+	需要解决的问题：要根据判断，分条件执行语句。
+	条件语句的作用：条件语句可以根据一个变量的值来控制 make 执行或者时忽略 Makefile 的特定部分，
+					 条件语句可以是两个不同的变量或者是常量和变量之间的比较。
+	条件语句使用优点：Makefile 中使用条件控制可以做到处理的灵活性和高效性。
+
+	**注意**：条件语句只能用于控制 make 实际执行的 Makefile 文件部分，不能控制规则的 shell 命令执行的过程。
+
+	关键字：
+		 ifeq		判断是否相等 ，相等为true ，不相等为false
+		ifneq	判断是否相等 ，不相等为true ，相等为false
+		ifdef 	判断是否有值，有值为 true，没有值为 false。
+		ifndef 	判断是否有值，没有值为 true，有值为 false。
+
+**ifeq与ifneq**
+	使用方法：
+		ifeq (ARG1, ARG2)
+		ifeq 'ARG1' 'ARG2'
+		ifeq "ARG1" "ARG2"
+		ifeq "ARG1" 'ARG2'
+		ifeq 'ARG1' "ARG2"
+		
+	实例：
+		libs_for_gcc= -lgnu
+		normal_libs=
+		foo:$(objects)
+		ifeq($(CC),gcc)
+			$(CC) -o foo $(objects) $(libs_for_gcc)
+		else
+			$(CC) -o foo $(objects) $(noemal_libs)
+		endif
+		
+	条件语句中使用到三个关键字“ifeq”、“else”、“endif”。其中：“ifeq”表示条件语句的开始，并指定一个比较条件（相等）。括号和关键字之间要使用空格分隔，两个参数之间要使用逗号分隔。参数中的变量引用在进行变量值比较的时候被展开。“ifeq”，后面的是条件满足的时候执行的，条件不满足忽略；“else”表示当条件不满足的时候执行的部分，不是所有的条件语句都要执行此部分；“endif”是判断语句结束标志，Makefile 中条件判断的结束都要有。
+
+**ifdef 和 ifndef** 
+	使用方式：--> 有点像 #ifdefine
+		ifdef VARIABLE-NAME 
+		作用：判断变量是否有值
+		
+		
+		

@@ -1,0 +1,21 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.6
+Creation-Date: 2022-08-02T09:36:33+08:00
+
+====== 以太网 ======
+Created 星期二 02 八月 2022
+{{.\pasted_image.png}}
+
+{{.\pasted_image002.png}}
+
+64B-1518B
+{{.\pasted_image003.png}}
+{{.\pasted_image004.png}}
+
+
+{{.\pasted_image005.png}}
+pad:不满64字节填充；
+extension：An Extension field is added, if required (for 1000 Mb/s half duplex operation only). 
+
+
+

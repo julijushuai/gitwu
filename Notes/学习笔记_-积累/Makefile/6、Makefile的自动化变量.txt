@@ -1,0 +1,11 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.6
+Creation-Date: 2022-06-07T14:35:02+08:00
+
+====== 6、Makefile的自动化变量 ======
+Created 星期二 07 六月 2022
+
+[[http://c.biancheng.net/view/7094.html|源章节]]
+我们在 Makefile 中描述规则时，依赖文件和目标文件是变动的，显然在命令中不能出现具体的文件名称，否则模式规则将失去意义。
+
+

@@ -1,0 +1,20 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.6
+Creation-Date: 2022-05-28T16:03:34+08:00
+
+====== recv的进一步了解 ======
+Created 星期六 28 五月 2022
+
+
+
+
+
+
+recv 的第四个参数 
+
+
+	 MSG_WAITALL 
+		This flag requests that the operation block until the full request is satisfied. However, the call may still return less data than requested if a signal is caught, an error or disconnect occurs, or the next  data  to  be  received  is  of a different type than that returned.  This flag has no effect for datagram sockets.
+		
+		**译：**该标志请求操作块，直到满足全部请求为止。 但是，如果捕捉到信号、发生错误或断开连接，或者接收到的下一个数据与返回的数据类型不同，则调用返回的数据仍可能少于请求的数据。 此标志对数据报套接字无效。
+

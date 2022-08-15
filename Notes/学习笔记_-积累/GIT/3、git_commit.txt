@@ -1,0 +1,10 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.6
+Creation-Date: 2022-06-29T16:48:36+08:00
+
+====== 3、git commit ======
+Created 星期三 29 六月 2022
+
+1、对先前的提交(commit)进行追加修改
+	git commit --amend 
+	对之前的commit 提交进行修改。事实上确实如此，不仅可以修改提交的内容，还可以修改commit 信息。

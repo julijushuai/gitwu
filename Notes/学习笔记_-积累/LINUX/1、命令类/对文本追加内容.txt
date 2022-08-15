@@ -1,0 +1,33 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.6
+Creation-Date: 2022-06-15T09:37:59+08:00
+
+====== 对文本追加内容 ======
+Created 星期三 15 六月 2022
+
+**方法1：文本编辑器**
+
+[root@linux test_shell]# vim file.txt
+ 
+
+**方法2：输出重定向**
+
+[root@linux test_shell]# echo "hello world" >> file.txt
+ 
+[root@linux test_shell]# cat >> file.txt
+hello world
+[root@linux test_shell]#
+备注：按 Ctrl + D 结束编辑。
+
+ 
+**方法3：输入输出重定向**
+
+[root@linux test_shell]# cat >> file.txt << end
+> hello world
+> end
+[root@linux test_shell]#
+ 
+
+**方法4：sed流编辑器**
+
+[root@linux test_shell]# sed -i '$a hello world' file.txt

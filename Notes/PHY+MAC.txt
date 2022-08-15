@@ -1,0 +1,15 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.6
+Creation-Date: 2022-08-12T09:24:57+08:00
+
+====== PHY+MAC ======
+Created 星期五 12 八月 2022
+
+{{.\pasted_image.png}}
+{{.\pasted_image003.png}}
+
+MAC（Media Access Control，MAC）即媒体访问控制。该部分有两个概念：MAC 可以指的是一个硬件控制器，也可以指 MAC 通信协议。该协议位于 OSI 七层协议中数据链路层的下半部分，主要负责控制与连接物理层的物理介质。
+{{.\pasted_image001.png}}
+PHY（Physical Layer，PHY）是 IEEE802.3 中定义的一个标准模块，STA（station management entity，管理实体，一般为MAC 或 CPU）通过 SMI（Serial Manage Interface）对 PHY 的行为、状态进行管理和控制，而具体管理和控制动作是通过读写 PHY 内部的寄存器实现的。
+PHY 是物理接口收发器，它实现 OSI 模型的物理层。IEEE-802.3 标准定义了以太网 PHY。包括 MII/GMII (介质独立接口) 子层、PCS(物理编码子层)、PMA(物理介质附加)子层、PMD(物理介质相关)子层、MDI子层。
+{{.\pasted_image002.png}}

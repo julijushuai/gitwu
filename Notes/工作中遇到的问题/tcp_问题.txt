@@ -1,0 +1,40 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.6
+Creation-Date: 2022-05-26T11:34:28+08:00
+
+====== tcp 问题 ======
+Created 星期四 26 五月 2022
+
+**1、Cannot assign requested address**
+	无法连接到TCP问题，
+	原因：tcp客户端频繁的链接服务器，每次的了解实现都很短，导致很多的TIME_WAIT，用光了端口号，无法建立新的tcp链接。
+	通过命令查看tcp端口的链接数量：
+
+
+	解决方案：
+	1）修改内核参数（需要root权限），调低TIME_WAIT的时间
+		sysctl -w net.ipv4.tcp_fin_timeout=30      →  30是时间 30s
+		
+	2）修改tcp/ip协议配置， 通过配置/proc/sys/net/ipv4/tcp_tw_resue, 默认为0，修改为1，释放TIME_WAIT端口给新连接使用：
+		sysctl -w net.ipv4.tcp_timestamps=1
+	3）允许端口重用：
+		sysctl -w net.ipv4.tcp_tw_reuse = 1
+	
+	4）寻找在代码上解决该问题。
+	
+	
+	就本人实习第三次任务
+	解决方案：将同步文件夹的第一次同步用一个sock完成。但是对于单个sock接收多个文件会导致的问题：多个文件被写入一个文件。
+		对此采用的解决方案：先将文件的大小传过去。后面对接收到的数据字节数与文件大小做减法。当不足一个接收缓冲时，接收大小为剩余字节数。
+		之后同样遇到读取套接字内容乱的问题，之后接收命令也一样。
+		解决方案：采用 __recv( )__ ，其中地第四个参数不在为0，为MSG_WAITALL 。详细见[[..\..\学习笔记_-积累\C语言的查漏补缺\recv的进一步了解.txt|recv的进一步了解]] 。
+		
+2、一个知识点的补充
+	在网络编程遇到bind函数时，需要绑定IP地址，服务端可以设置INADDR_ANY。
+	INADDR_ANY就是指定地址为**0.0.0.0**的地址，这个地址事实上表示不确定地址，或“所有地址”、“任意地址”。
+	也就是表示__本机的所有IP__，因为有些机子不止一块网卡，多网卡的情况下，这个就表示所有网卡ip地址的意思。
+
+	额外的    INADDR_NONE    代表IP地址是无效的.
+	#define INADDR_NONE 0xffffffff
+	#define INADDR_ANY (u_long)0x00000000
+	

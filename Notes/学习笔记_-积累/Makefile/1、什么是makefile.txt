@@ -1,0 +1,9 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.6
+Creation-Date: 2022-06-07T10:36:19+08:00
+
+====== 1、什么是makefile ======
+Created 星期二 07 六月 2022
+
+Makefile 文件描述linux 系统下C/C++工程的编译规则 ，是一个实现C/C++项目自动化编译的文件。其定义了一系列规则，指明源文件的编译顺序、依赖关系、是否需要重新编译等。
+

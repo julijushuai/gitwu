@@ -1,0 +1,38 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.6
+Creation-Date: 2022-06-07T17:33:37+08:00
+
+====== shell字符串 ======
+Created 星期二 07 六月 2022
+
+**shell字符串**
+	字符串可以用单引号，也可以用双引号，__也可以不用引号__。 ps：这么水？
+	1）单引号
+		如：str='this is a string'
+
+	2）双引号
+		如：str="Hello, I know you are \"$your_name\"! \n"
+	
+	区别：
+		双引号里可以有变量
+		双引号里可以出现转义字符
+		
+**拼接字符串：直接使用引号**{{.\pasted_image001.png}}
+	看实例：
+		your_name="runoob"
+		# 使用双引号拼接
+		greeting="hello, "$your_name" !"
+		greeting_1="hello, ${your_name} !"
+		echo $greeting  $greeting_1
+		
+		# 使用单引号拼接
+		greeting_2='hello, '$your_name' !'
+		greeting_3='hello, ${your_name} !'
+		echo $greeting_2  $greeting_3
+		
+		输出结果为：
+			hello, runoob ! hello, runoob !
+			hello, runoob ! hello, ${your_name} !
+
+
+

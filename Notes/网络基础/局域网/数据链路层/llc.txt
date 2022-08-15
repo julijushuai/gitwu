@@ -1,0 +1,11 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.6
+Creation-Date: 2022-08-10T14:17:16+08:00
+
+====== llc层 ======
+Created 星期三 10 八月 2022
+IEEE802.2定义了LLC子层。
+
+实现数据链路层与硬件无关的功能，如流量控制，差错恢复。
+
+主要功能之一是：封装和标识上层数据。对网络层数据添加802.2LLC头进行封装，使用SAP/SNAP标志上层协议。

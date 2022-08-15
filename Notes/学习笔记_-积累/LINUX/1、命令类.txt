@@ -1,0 +1,13 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.6
+Creation-Date: 2022-06-22T09:22:00+08:00
+
+====== 1、命令类 ======
+Created 星期三 22 六月 2022
+
+1、Linux下根据函数名查找所在文件  
+	grep 　"关键字" -r 　搜索目录
+	grep  "add" -r ./Downloads/test/
+	详情见链接-->grep
+	
+	

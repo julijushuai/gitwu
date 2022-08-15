@@ -1,0 +1,8 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.6
+Creation-Date: 2022-05-25T09:17:47+08:00
+
+====== first notes-test ======
+Created 星期三 25 五月 2022
+
+g  

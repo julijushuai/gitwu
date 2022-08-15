@@ -1,0 +1,7 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.6
+Creation-Date: 2022-05-27T10:01:44+08:00
+
+====== 一些函数的对比 ======
+Created 星期五 27 五月 2022
+

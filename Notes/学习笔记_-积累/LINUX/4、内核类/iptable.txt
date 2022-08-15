@@ -1,0 +1,29 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.6
+Creation-Date: 2022-06-11T11:24:40+08:00
+
+====== 5，iptable ======
+Created 星期六 11 六月 2022
+
+
+是内核中的包过滤防火墙系统。可以添加、删除过滤规则。有四表，五链。
+
+四表：指功能
+（1）Filter表：控制数据包进出及转化的权利，涉及链：INPUT、FORWARD、OUTPUT
+（2）Nat表：控制地址中转，涉及除FORWARD的其他四个链。
+（3）Mangle：修改数据包的原数据，
+（4）Raw：追踪数据表规则表
+
+五链：指规则链。每个规则表包含多个数据链，INPUT（入站数据过滤），OUTPUT（出站数据过滤），FORWARD（转发数据过滤），PREROUTING（路由前过滤），POSETROUTING（路由后过滤）。
+
+语法格式：
+iptables [-t table] COMMAND [chain] CRETIRIA -j ACTION
+说明：
+a．-t 指定需要维护的防火墙规则表，不用-t 默认使用filter 表。
+b．COMMAND  指明链表 
+c．CRETIRIA  匹配参数
+d．ACTION  触发动作
+
+
+
+iptables -A OUTPUT -p tcp –tcp-flags RST RST -j DROP。

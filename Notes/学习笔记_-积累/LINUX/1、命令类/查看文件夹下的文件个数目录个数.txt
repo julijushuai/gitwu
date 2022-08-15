@@ -1,0 +1,9 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.6
+Creation-Date: 2022-08-11T15:48:10+08:00
+
+====== 查看文件夹下的文件个数目录个数 ======
+Created 星期四 11 八月 2022
+
+查看文件数：ls -l |grep ^-| wc -l;包括子目录ls -lR |grep ^-| wc -l或者find ./名称 -type f | wc -l。
+查看目录：ls -l |grep d| wc -l;子目录ls -lR |grep d| wc -l或者find ./名称 -type d | wc -l

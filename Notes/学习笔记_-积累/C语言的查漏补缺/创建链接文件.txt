@@ -1,0 +1,27 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.6
+Creation-Date: 2022-05-31T10:52:48+08:00
+
+====== 创建链接文件 ======
+Created 星期二 31 五月 2022
+
+**1、链接文件**
+	1）硬链接文件
+		头文件：     #include <unistd.h>
+		函数定义：  int link(const char *oldpath, const char *newpath);
+		
+		描述：对一个__已经存在__的文件创建一个新的链接文件。如果新链接文件已经存在则不会创建。
+
+		返回值 ：
+			成功 →  0
+			失败 →  -1
+	2）软连接文件
+		头文件：   #include <unistd.h>
+		函数定义：int symlink(const char *target, const char *linkpath);
+		
+		描述：对一个文件创建一个链接，文件可以不存在；
+		
+		返回值：
+			成功 → 0
+			失败 → -1
+

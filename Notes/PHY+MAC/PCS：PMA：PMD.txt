@@ -1,0 +1,25 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.6
+Creation-Date: 2022-08-12T14:02:51+08:00
+
+====== PCS：PMA：PMD ======
+Created 星期五 12 八月 2022
+
+{{.\pasted_image.png}}
+PHY由多个模块组成，各个功能模块的作用如下：PHY包含发送、接收和管理物理介质上施加和恢复的编码信号的功能。
+
+PLS：PhysicalSublayer Signaling，对MAC给的信息进行传递，只在1Mb/s、10Mb/s的应用场景才出现；     CSMA/CD MAC子层也会通过观察PLS提供的载波感知信号来监控物理介质中的流量
+
+**PCS：Physical Coding Sublayer，对MAC给的信息进行编码，应用于≥100 Mb/s的应用场景，比如完成8B/10B、64B/66B、256B/257B编码；**
+PCS包含对数据位进行编码以通过PMA传输的功能，以及对从PMA接收的条件信号进行解码的功能。
+
+FEC：Forward Error Correction，前向纠错，与10GBase-R、40GBase-R的PCS 搭配；
+
+RS-FEC：Reed-Solomon前向纠错，比单纯的FEC纠错能力更强，与100GBase-R的PCS 搭配，采用256B/257B编码；
+
+**PMA：Physical Medium Attachment，物理媒介适配层，PMA子层主要用于串行化和解串。PMA子层中集成了SERDES，发送和接收缓冲，时钟发生器及时钟恢复电路。**
+
+**PMD：Physical Medium Dependent，物理介质相关子层，PMD子层位于整个网络的最底层，主要完成光纤连接、电/光转换等功能。PMD为电/光收发器，把输入的电压变化状态变为光波或光脉冲，以便能在光纤中传输。**
+
+AN: Auto-Negotiation Function，自动协商，使背板两侧的Device能够互换信息以发挥出彼此最大的优势；
+————————————————

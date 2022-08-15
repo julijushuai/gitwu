@@ -1,0 +1,7 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.6
+Creation-Date: 2022-05-25T11:56:23+08:00
+
+====== vim使用笔记 ======
+Created 星期三 25 五月 2022
+

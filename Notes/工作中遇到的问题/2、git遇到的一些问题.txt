@@ -1,0 +1,9 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.6
+Creation-Date: 2022-06-17T11:36:02+08:00
+
+====== 2、git遇到的一些问题 ======
+Created 星期五 17 六月 2022
+
+问题1：git  push 推不上去，且没有此关联远程库都
+

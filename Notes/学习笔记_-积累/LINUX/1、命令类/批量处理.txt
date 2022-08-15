@@ -1,0 +1,14 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.6
+Creation-Date: 2022-06-09T15:46:48+08:00
+
+====== 批量处理 ======
+Created 星期四 09 六月 2022
+
+1、批量创建文件
+	touch file {0...150}.txt   #批量创建151个 .txt 文件
+	
+2、批量向一些文件添加同一内容
+	
+	find . -name 'filename*' | xargs sed -i '$a\added-content'
+	

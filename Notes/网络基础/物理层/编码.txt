@@ -1,0 +1,16 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.6
+Creation-Date: 2022-08-11T16:26:42+08:00
+
+====== 编码 ======
+Created 星期四 11 八月 2022
+
+曼彻斯特编码
+{{.\pasted_image.png}}
+差分曼彻斯特编码
+{{.\pasted_image001.png}}
+
+4B/5B 编码
+{{.\pasted_image002.png}}
+
+

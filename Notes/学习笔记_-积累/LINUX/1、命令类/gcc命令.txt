@@ -1,0 +1,17 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.6
+Creation-Date: 2022-06-07T11:51:34+08:00
+
+====== gcc命令 ======
+Created 星期二 07 六月 2022
+
+gcc命令的参数
+
+**-c**  只编译，不链接成为可执行文件。由.c 源文件生成 .o 为后缀的目标文件
+
+**-o + filename**  确定输出文件为 filename 。不能与源文件同名，不给出这个选项默认输出 a.out 文件
+ 
+**-g**  产生符号调试工具（GNU的gdb）所必须的符号信息
+
+
+

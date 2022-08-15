@@ -1,0 +1,10 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.6
+Creation-Date: 2022-08-10T14:19:59+08:00
+
+====== mac层 ======
+Created 星期三 10 八月 2022
+
+较低的mac层提供LLC和物理层之间的接口。不同局域网的MAC层不同，LLC相同。
+功能：适应多种多样的传输介质，并且在任何一种介质上处理信道的占用，站点的标识和寻址问题。
+802.3定义了以太网的MAC子层。

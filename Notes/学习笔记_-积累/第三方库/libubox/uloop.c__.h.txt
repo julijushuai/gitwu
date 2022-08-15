@@ -1,0 +1,121 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.6
+Creation-Date: 2022-06-21T15:29:40+08:00
+
+====== uloop.c  .h ======
+Created 星期二 21 六月 2022
+
+[[https://www.cnblogs.com/laoxiaobaiup/p/9366880.html|源]]
+
+**1、libubox概述**
+	libubox是openwrt新版本中的一个基础库，有很多应用是基于libubox开发的，如uhttpd,netifd,ubusd等。
+	libubox主要提供以下两种功能：
+		a.提供一套基于事件驱动的机制；
+		b.提供多种开发支持接口，如链表、kv链表、平衡查找二叉树、md5、json等。
+	使用libubox开发的好处有如下几点：
+　　		a.可以使程序基于事件驱动，从而可实现在单线程中处理多个任务；
+		b.基于libubox提供的API可以加快开发进度，提高程序的稳定性；
+		c. 能更好的将程序融入openwrt架构中，因为新的openwrt的很多应用和库都基于libubox开发，当前分析使用的libubox版本为libubox-2014-08-04。
+**2、uloop**
+	uloop是libubox下的一个模块，有三个功能：文件描述符触发事件的监控，timeout定时器处理， 当前进程的子进程的维护
+	
+	**2.1 整体框架**
+		[[https://blog.csdn.net/u013401853/article/details/87076459?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522165586448916781685343530%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&request_id=165586448916781685343530&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduend~default-2-87076459-null-null.142^v20^pc_rank_34,157^v15^new_3&utm_term=uloop&spm=1018.2226.3001.4187|程序例程]]
+	2.1.1 主体框架接口
+		1）初始化事件循环
+			int uloop_init（void）；
+			创建一个epoll的句柄，最多监控32个文件描述符。
+			设置文件描述符的属性，如FD_CLOEXEC。
+		
+		2）事件循环主处理接口
+			void uloop_run (void)
+		
+		3) 销毁事件循环
+			void uloop_done (void)
+			关闭epoll句柄。
+			清空定时器链表中的所以定时器。
+			清空进程处理事件链表中删除的所以的进程事件节点。
+	
+	2.1.2 主框架流程
+		{{.\pasted_image.png}}
+		
+	uloop_run轮询处理定时器、进程、描述符事件。
+	a）遍历定时器timeouts链表判断是否有定时器超时，如果有则进行相应的回调处理，没有跳过。
+	b）判断是否有子进程退出SIGCHLD信号，有就会遍历processes进程处理的链表，调用相应的回调函数，没有跳过。
+	c）计算出距离下一个最近的定时器的时间，作为文件描述符事件epoll的超时时间。然后epoll进行事件监听，如果有文件描述符准备就绪(可读写时间)则调用相应的回调函数，或者有信号进行中断epoll返回停止监听，否则epoll阻塞直到超时时间完成。
+	
+	
+	**2.2描述符事件**
+	2.2.1 文件描述符uloop结构
+	{{.\pasted_image001.png}}
+	
+	2.2.2 描述符uloop使用接口
+		1）注册一个新描述符到事件处理循环
+			int uloop_fd_add ( struct uloop_fd *sock, unsigned int flags );
+			uloop最多支持10个描述符事件
+		2）从事件处理循环中销毁指定描述符
+		　int uloop_fd_delete(struct uloop_fd *sock)；
+	
+	2.2.3 描述符事件流程
+		　int uloop_fd_delete(struct uloop_fd *sock)
+			{{.\pasted_image003.png}}
+			
+	**2.3 定时器事件**
+	2.3.1  定时器timeout的结构	
+		struct uloop_timeout
+		{
+			struct list_head list;  //链表节点
+			bool pending;           //添加一个新的timeout pending是true， false删除该节点timeout
+			uloop_timeout_handler cb; //超时处理函数
+			struct timeval time;      //超时时间
+		};
+		
+	2.3.2 定时器使用接口
+		1）注册一个新的定时器
+		int uloop_timeout_add(struct uloop_timeout *timeout)
+		用户不直接使用，内部接口，被接口uloop_timeout_set调用。
+		将定时器插入到timeouts链表中，该链表成员根据超时时间从小到大排列。
+		{{.\pasted_image005.png}}
+		2）设置定时器超时时间（毫秒），并添加
+		int uloop_timeout_set(struct uloop_timeout *timeout, int msecs)；
+		如果pending为true,则从定时器链表中删除原先已存在的定时器。
+		设置定时器的超时时间点。
+		调用uloop_timeout_add接口将该定时器加入到定时器链表中。
+		
+		3）销毁指定定时器
+		int uloop_timeout_cancel(struct uloop_timeout *timeout)；
+		从定时器链表中删除指定定时器。
+		
+		4）获取定时器还剩多少事件超时
+		int uloop_timeout_remaining(struct uloop_timeout *timeout)；
+		这里pending标记可判断定时器是否处于生命周期，如果尚处在生命周期内，则返回离定时器超时还有多少时间，单位为毫秒。
+
+	2.3.4 定时器的使用
+		遍历定时器链表，如果有定时器已经超时，则执行改定时器的回调函数。
+		
+	**2.4  进程事件**
+		2.4.1 进程事件处理结构
+			struct uloop_process {
+				   struct list_head list;             
+				   bool pending;                  
+				   uloop_process_handler cb;  /** 文件描述符， 调用者初始化 */
+				   pid_t pid;                 /** 文件描述符， 调用者初始化 */
+			};
+		
+		2.4.2 进程事件使用接口
+			1）注册新进程到事件处理循环中
+			int uloop_process_add(struct uloop_process *p)
+			将进程事件插入到进程事件链表中，链表根据__PID__从小到大排序。
+			其中p->proc.pid为注册到uloop监控的进程ID。
+			P->cb为进程退出的回调函数，类型为：
+				typedef void (*uloop_process_handler)(struct uloop_process *c, int ret)
+
+			2）从事件处理循环在销毁指定的进程
+			int uloop_process_delete(struct uloop_process *p)
+			从进程事件处理链表中删除该进程事件。
+			
+		2.4.3  进程事件吹流程
+			{{.\pasted_image006.png}}
+			
+			
+

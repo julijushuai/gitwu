@@ -1,0 +1,13 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.6
+Creation-Date: 2022-08-11T11:38:28+08:00
+
+====== 一些名词 ======
+Created 星期四 11 八月 2022
+
+**MAU（Medium Attachment Unit）介质访问单元**
+**MDI (Medium Dependant interface) 介质相关接口**
+**AUI（Attachment Unit intface）连接单元接口**
+**PCS（Physical Code Sublayer）物理编码子层**
+**PMA（Phusical Media Attachment Sublayer）物理介质附属子层**
+**PMD(Physical Media Dependent)物理介质相关子层**

@@ -1,0 +1,24 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.6
+Creation-Date: 2022-08-10T14:57:04+08:00
+
+====== mac地址 ======
+Created 星期三 10 八月 2022
+
+{{.\pasted_image.png}}
+{{.\pasted_image001.png}}
+{{.\pasted_image002.png}}
+
+
+
+网卡工作在混杂模式可以接收任意帧。
+{{.\pasted_image003.png}}
+
+
+
+
+{{.\pasted_image007.png}}
+
+
+{{.\pasted_image006.png}}
+

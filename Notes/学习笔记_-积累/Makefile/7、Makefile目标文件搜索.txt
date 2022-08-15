@@ -1,0 +1,63 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.6
+Creation-Date: 2022-06-10T10:14:39+08:00
+
+====== 7、Makefile目标文件搜索 ======
+Created 星期五 10 六月 2022
+
+[[http://c.biancheng.net/view/7051.html|Makefile目标文件的搜索]]
+**常见的搜索方法主要两种：一般搜索 VPATH     、选择搜索vpath**
+	区别：
+		VPATH：是变量，环境变量。使用时需要指定文件的路径
+		vpath  ：是关键字，搜索时不需要加上文件的路径，还需要加上相应的限制条件
+		VPATH 是搜索路径下所有的文件，而 vpath 更像是添加了限制条件，会过滤出一部分再去寻找。
+		
+		使用什么样的搜索方法，主要是基于编译器的执行效率。VPATH会去搜索目录下的所以文件，每个文件都回去作对比，速度慢、效率低。
+		建议使用：
+			VPATH —>> 搜索的文件不能使用通配符表示的，
+			vpath   —>> 某个文件存在特别多的文件   
+						 可以使用通配符
+    
+**VPATH的使用**
+	
+	单个路径：
+		VPATH:= src 
+		说明：可以理解为吧src的值赋给变量VPATH，所以在执行make的时候会从 src 目录下找需要的文件。
+	多个路径：
+	
+		VPATH := src car
+		或
+		VPATH := src:car
+		
+		说明：多个路径之间要使用空格或者是冒号隔开，表示在多个路径下搜索文件。__搜索的顺序为我们书写时的顺序__，	
+				 拿上面的例子来说，我们应该先搜索 src 目录下的文件，再搜索 car 目录下的文件。
+		**注意：**
+			无论你定义了多少路径，make 执行的时候会先搜索当前路径下的文件，当前目录下没有我们要找的文件，
+			才去 VPATH 的路径中去寻找。如果当前目录下有我们要使用的文件，那么 make 就会使用我们当前目录
+			下的文件。
+		
+
+**vpath的使用**
+	**具体用法：**
+		1) vpath PATTERN DIRECTORIES 
+		2) vpath PATTERN
+		3) vpat
+		说明：
+			PATTERN：可以理解为要寻找的条件，DIRECTORIES：寻找的路径 
+	**用法 1：**
+		如：vpath test.c src
+		说明：在src目录下搜索  test.c 文件
+		所路径的书写栗子如下；
+			vpath test.c src car         或者是         vpath test.c src : car
+	**用法 2：**
+		如：vpath test.c
+		说明：用法二的意思是__清除__符合文件 test.c 的搜索目录
+	**用法 3：**
+		vpath
+		说明：vpath 单独使的意思是清除所有已被设置的文件搜索路径
+	匹配一个或者是多个字符。如：%.c
+	
+	
+	
+
+

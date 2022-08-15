@@ -1,0 +1,48 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.6
+Creation-Date: 2022-08-12T11:23:51+08:00
+
+====== 什么是MII ======
+Created 星期五 12 八月 2022
+
+MII（Media Independent Interface）即媒体独立接口，MII 接口是 MAC 与 PHY 连接的标准接口。它是 IEEE-802.3 定义的以太网行业标准。MII 接口提供了 MAC 与 PHY 之间、PHY 与 STA（Station Management）之间的互联技术，该接口支持 10Mb/s 与 100Mb/s 的数据传输速率，数据传输的位宽为 4 位。“媒体独立” 表明在不对 MAC 硬件重新设计或替换的情况下，任何类型的 PHY 设备都可以正常工作。
+{{.\pasted_image.png}}
+————————————————
+RS，PLS，STA 
+RS 即 Reconciliation sublayer，它的主要功能主要是提供一种 MII 和 MAC/PLS 之间的信号映射机制。
+MII 的 Management Interface 是与 STA（Station Management）相连的、。
+{{.\pasted_image001.png}}
+——————————————————————————————————————————————
+
+
+**MII 包括一个数据接口，以及一个 MAC 和 PHY 之间的管理接口**.
+**MII1数据接口： 包括分别用于发送器和接收器的两条独立信道。每条信道都有自己的数据、时钟和控制信号。MII 数据接口总共需要 16 个信号。**
+**MII 管理接口： 是个双信号接口，通过管理接口，MAC 就能监视和控制 PHY。其管理是使用 SMI(Serial Management Interface) 总线通过读写 PHY 的寄存器来完成的。一个是时钟信号MDC (management data clock)，另一个是数据信号MDIO (management data input/output)**。
+————————————————
+
+{{.\pasted_image002.png}}
+
+**一是从 MAC 层到 PHY 层的发送数据接口：**
+a:TX_CLK（transmit clock）： TX_CLK 是一个连续的时钟信号（即系统启动，该信号就一直存在），它是 TX_EN、TXD、TX_ER（信号方向为从 RS 到 PHY）的参考时钟。
+TX_CLK 由 PHY 驱动 ，TX_CLK 的时钟频率是数据传输速率的 25%，偏差 ±100ppm。例如，100Mb/s 模式下，TX_CLK 时钟频率为 25MHz，占空比在 35% 至 65% 之间。
+b:TXD<3:0>（transmit data）： TXD 由 RS 驱动，同步于 TX_CLK，在 TX_CLK 的时钟周期内，并且TX_EN 有效，TXD 上的数据被 PHY 接收，否则 TXD 的数据对 PHY 没有任何影响。
+c:TX_EN： 发送使能。TX_EN 由 Reconciliation 子层RS根据 TX_CLK 上升沿同步进行转换。
+d:TX_ER（transmit coding error）： TX_ER 同步于 TX_CLK，在数据传输过程中，如果 TX_ER 有效超过一个时钟周期，并且此时TX_EN 是有效的，则数据通道中传输的数据是无效的，没用的。
+当 TX_ER 有效并不影响工作在 10Mb/s 的 PHY 或者 TX_EN 无效时的数据传输。在 MII 接口的连线中，如果 TX_ER 信号线没有用到，必须将它下拉接地。
+**二是从 PHY 层到 MAC 层的接收数据接口：**
+a:RX_CLK：它是 RX_DV、RXD、RX_ER（信号方向是从 PHY 到 RS）的参考时钟。RX_CLK 同样是由 PHY 驱动，PHY 可能从接收到的数据中提取时钟 RX_CLK，也有可能从一个名义上的参考时钟来驱动RX_CLK。
+b:RXD<3:0>（receive data）： RXD由RS驱动，同步于 RX_CLK，在 RX_CLK 的时钟周期内，并且 RX_DV 有效，RXD 上的数据被RS 接收，否则 RXD 的数据对 RS 没有任何影响。
+c:RX_DV（Receive Data Valid）： RXD_DV 同步于 RX_CLK，被 PHY 驱动，它的作用如同于发送通道中的 TX_EN，不同的是在时序上稍有一点差别：为了让数据能够成功被RS接收，要求RXD_DV有效的时间必须覆盖整个 FRAME 的过程。
+MII以4位半字节方式传送数据双向传输，时钟速率25MHz。其工作速率可达100Mb/s。
+d:RX_ER（receive error）： RX_ER 同步于 RX_CLK，其在 RX 通道中的作用类似于 TX_ER 对于 TX 通道数据传输的影响。
+**三是从PHY 层到 MAC 层的状态指示信号：**
+a:COL（collision detected）： COL 不需要同步于参考时钟。The behavior of the COL signal is unspecified when the duplex mode bit0.8 inthe control register is set to a logic one（自动协商禁止，人工设为全双工模式）, or when the Auto-Negotiation process selects a full duplex mode of operation。即半双工模式信号有效，全双工模式信号无效。
+b:CRS（carrier sense）： CRS 不需要同步于参考时钟，只要通道存在发送或者接收过程，CRS 就需要有效。
+The behavior of the COL signal is unspecified when the duplex mode bit0.8 inthe control register is set to a logic one（自动协商禁止，人工设为全双工模式）, or when the Auto-Negotiation process selects a full duplex mode of operation。即半双工模式信号有效，全双工模式信号无效。
+**四是 MAC 层和 PHY 层之间传送控制和状态信息：**
+a:MDC： 由站管理实体向 PHY 提供，作为在 MDIO 信号上传送信息的定时参考。 MDC 是一种非周期性的信号，没有最高或最低时间。信号的最小周期（实际是正电平时间和负电平时间之和）为400ns，最小正电平时间和负电平时间为160ns，最大的正负电平时间无限制。
+b:这是一根双向的数据线。用来传送MAC层的控制信息和物理层的状态信息。MDIO数据与MDC时钟同步，在MDC上升沿有效。
+
+**PHY 里面的部分寄存器是 IEEE 定义的，这样PHY把自己的目前的状态反映到寄存器里面，MAC 通过 SMI 总线不断的读取PHY 的状态寄存器以得知目前 PHY 的状态。例如连接速度、双工的能力等。当然也可以通过 SMI 设置 PHY的寄存器达到控制的目的。例如流控的打开关闭、自协商模式还是强制模式等。不论是物理连接的MII总线和 SMI 总线还是 PHY 的状态寄存器和控制寄存器都是由IEEE的规范的。**
+————————————————
+
