@@ -1,0 +1,17 @@
+main:main.o    
+gcc main.o -o main
+
+main.o:main.S  
+gcc -c main.S -o main.o
+
+main.S:main.i  
+gcc -S main.i -o main.S
+
+main.i:main.c  
+gcc -E main.c -o main.i
+
+.PHONY:
+clear:
+rm main.i main.S  main.o  -rf
+clearall:
+rm main.i main.S  main.o main -rf

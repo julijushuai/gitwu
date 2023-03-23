@@ -1,16 +1,4 @@
-/********************************************************
-opyright (C), 2021-2022, Connect System.
-FileName:
-Author:  huyf      Version :  1.0        Date:2018-2-26
-Description:
-Version:
-History:
 
-1. Date:
-Author:
-Modification:
-2. ...
-***********************************************************/
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -183,7 +171,7 @@ static const ct_uint16 crc16_ccitt_tab[] = {
 
 
 #if 1
-//瑙ｆ瀽鑾峰彇鍒扮殑4k鏁版嵁
+//解析获取到的4k数据
 static void __parse4k_data(ct_char *mtd_data, ct_device_info_t *dev_info)
 {
 	ct_char *ofs = NULL;
@@ -235,11 +223,11 @@ static void __parse4k_data(ct_char *mtd_data, ct_device_info_t *dev_info)
 
 }
 
-//fill 256B鏁版嵁
+//fill 256B数据
 static void __fill256_data(ct_device_info_t *dev_info, ct_char *space)
 {
 	ct_char *ofs = NULL;
-
+	
 	memset(space, 0x00, LEN256);
 
 	ofs = space;
@@ -283,11 +271,11 @@ static void __fill256_data(ct_device_info_t *dev_info, ct_char *space)
 	ofs[1] = (dev_info->crc256 & 0x00FF);
 }
 
-//濉厖4k鏁版嵁
+//填充4k数据
 static void __fill4k_data(ct_device_info_t *dev_info, ct_char *space)
 {
 	ct_char *ofs = NULL;
-
+	
 	memset(space, 0x00, LEN4K);
 	ofs = space;
 
@@ -315,11 +303,11 @@ static void __fill4k_data(ct_device_info_t *dev_info, ct_char *space)
 static void device_info_help(void)
 {
 	fprintf(stderr,
-			"usage:\n"
-			" device-info <device>                                    --printf device info on memory\n"
-			" device-info <device> read <option>                      --read the value of option from memory\n"
+	"usage:\n"
+		" device-info <device>                                    --printf device info on memory\n"
+		" device-info <device> read <option>                      --read the value of option from memory\n"
 			"    <option> {magic|content|length|device|hwtype|hwmajor|hwminor|mac|name|crc256|binformatver|flag|sn|crc4k}\n"
-			" device-info <device> write <option> <value>             --write to memory\n"
+		" device-info <device> write <option> <value>             --write to memory\n"
 			"    device-info <device> write magic <MagicNumber>       --write <MagicNumber>:0x57575947(WWYL) on memory\n"
 			"    device-info <device> write content <Content>         --write 0xAABB 2Bytes on memory\n"
 			"    device-info <device> write length <Length>           --write 0xAABB 2Bytes on memory\n"
@@ -334,7 +322,7 @@ static void device_info_help(void)
 			"    device-info <device> write flag {crc|nocrc}          --check crc or no when system startup on memory\n"
 			"    device-info <device> write sn <sn>                   --write 1~32Bytes on memory\n"
 			"    device-info <device> write crc 4k                    --calculate device info 4k space crc on memory\n"
-		   );
+	);
 }
 
 #endif
@@ -347,7 +335,7 @@ ct_uint16 crc16_ccitt( ct_char *buf, ct_int32 len)
 	{
 		cksum = crc16_ccitt_tab[((cksum>>8) ^ *buf++) & 0xff] ^ (cksum << 8);
 	}
-
+	
 	return cksum;
 }
 
@@ -364,7 +352,7 @@ ct_int32 ct_dev_crc256(ct_device_info_t *dev_info, ct_uint16 *chksum)
 
 	memset(space256b, 0x00, LEN256);
 	__fill256_data(dev_info, space256b);
-
+	
 	crc = crc16_ccitt(space256b, LEN256);
 	*chksum = crc;
 
@@ -385,7 +373,7 @@ ct_int32 ct_dev_crc4k(ct_device_info_t *dev_info, ct_uint16 *chksum)
 
 	memset(space4k, 0x00, LEN4K);
 	__fill4k_data(dev_info, space4k);
-
+	
 	crc = crc16_ccitt(space4k, LEN4K);
 	*chksum = crc;
 
@@ -398,9 +386,9 @@ ct_int32 ct_dev_crc4k(ct_device_info_t *dev_info, ct_uint16 *chksum)
 ct_int32 __dev_info_magic_number_check(ct_uint32 magic_number)
 {
 	ct_uint32 num = 0;
-
+	
 	sscanf(MAGIC_NUMBER,"%x",&num);
-
+	
 	if (magic_number != num)
 	{
 		return -1;
@@ -417,7 +405,7 @@ ct_int32 ct_dev_info_get(ct_char *path, ct_device_info_t *dev_info)
 	ct_int32 fd;
 	ct_int32 error = 0;
 	ct_char *data = NULL;
-
+	
 	data = (ct_char *)malloc(LEN4K);
 	if (data == NULL)
 	{
@@ -443,7 +431,7 @@ ct_int32 ct_dev_info_get(ct_char *path, ct_device_info_t *dev_info)
 		data = NULL;
 		return -1;
 	}
-
+	
 	__parse4k_data(data, dev_info);
 
 	close(fd);
@@ -466,7 +454,7 @@ ct_int32 ct_dev_info_set(ct_char *path, ct_device_info_t *dev_info)
 		return -1;
 	}
 	__fill4k_data(dev_info, data);
-
+	
 	//open
 	fd = open(path, O_RDWR);
 	if (fd < 0)
@@ -476,7 +464,7 @@ ct_int32 ct_dev_info_set(ct_char *path, ct_device_info_t *dev_info)
 		data = NULL;
 		return -1;
 	}
-
+	
 	//erase
 	erase.start = 0x00;
 	erase.length = LEN4K;
@@ -510,131 +498,139 @@ ct_int32 ct_dev_info_set(ct_char *path, ct_device_info_t *dev_info)
 #endif
 #if 1
 
-static ct_int32 __dev_info_cmd_parse(ct_char *argv1, ct_char *argv2, ct_device_info_t *dev_info)
+static void __dev_info_magic_parse(ct_char *argv, ct_device_info_t *dev_info)
 {
 	ct_uint32 num32 = 0;
-	ct_uint16 num16 = 0;
-	ct_uint16 crc = 0;
-	ct_int32 error = 0;
+	sscanf(argv,"%x",&num32);
+	dev_info->magic_number = num32;
+}
 
-	if (argv1 == NULL || argv2 == NULL)
+static void __dev_info_content_parse(ct_char *argv, ct_device_info_t *dev_info)
+{
+	ct_uint16 num16 = 0;
+	sscanf(argv,"%hx",&num16);
+	dev_info->content = num16;
+}
+
+static void __dev_info_length_parse(ct_char *argv, ct_device_info_t *dev_info)
+{
+	ct_uint16 num16 = 0;
+	sscanf(argv,"%hx",&num16);
+	dev_info->length = num16;
+}
+
+static void __dev_info_device_parse(ct_char *argv, ct_device_info_t *dev_info)
+{
+	ct_uint16 num16 = 0;
+	sscanf(argv,"%hx",&num16);
+	dev_info->device_id = num16;
+}
+
+static void __dev_info_hwtype_parse(ct_char *argv, ct_device_info_t *dev_info)
+{
+	ct_uint16 num16 = 0;
+	sscanf(argv,"%hx",&num16);
+	dev_info->hw_type = num16;
+}
+
+static void __dev_info_hwmajor_parse(ct_char *argv, ct_device_info_t *dev_info)
+{
+	ct_uint16 num16 = 0;
+	sscanf(argv,"%hx",&num16);
+	dev_info->hw_major_version = num16;
+}
+
+static void __dev_info_hwminor_parse(ct_char *argv, ct_device_info_t *dev_info)
+{
+	ct_uint16 num16 = 0;
+	sscanf(argv,"%hx",&num16);
+	dev_info->hw_minor_version = num16;
+}
+
+static void __dev_info_mac_parse(ct_char *argv, ct_device_info_t *dev_info)
+{
+	ct_uint32 error = 0;
+	memset(dev_info->mac, 0x00, sizeof(dev_info->mac));
+	error = utili_str_to_mac(argv, dev_info->mac);
+	if (error < 0)
 	{
 		return -1;
 	}
 
-	if (strcmp(argv1, "magic") == 0)
+}
+
+static void __dev_info_name_parse(ct_char *argv, ct_device_info_t *dev_info)
+{
+	memset(dev_info->product_name, 0x00, sizeof(dev_info->product_name));
+	strncpy(dev_info->product_name, argv, 16);
+}
+
+static void __dev_info_binformatver_parse(ct_char *argv, ct_device_info_t *dev_info)
+{
+	ct_uint16 num16 = 0;
+	sscanf(argv,"%hx",&num16);
+	dev_info->bin_format_version = num16;
+}
+
+static void __dev_info_flag_parse(ct_char *argv, ct_device_info_t *dev_info)
+{
+	if (strcmp(argv, "crc") == 0 )
 	{
-		sscanf(argv2,"%x",&num32);
-		dev_info->magic_number = num32;
+		dev_info->flag = 1;
 	}
-	else if (strcmp(argv1, "content") == 0)
+	else if (strcmp(argv, "nocrc") == 0)
 	{
-		sscanf(argv2,"%hx",&num16);
-		dev_info->content = num16;
-	}
-	else if (strcmp(argv1, "length") == 0)
-	{
-		sscanf(argv2,"%hx",&num16);
-		dev_info->length = num16;
-	}
-	else if (strcmp(argv1, "device") == 0)
-	{
-		sscanf(argv2,"%hx",&num16);
-		dev_info->device_id = num16;
-	}
-	else if (strcmp(argv1, "hwtype") == 0)
-	{
-		sscanf(argv2,"%hx",&num16);
-		dev_info->hw_type = num16;
-	}
-	else if (strcmp(argv1, "hwmajor") == 0)
-	{
-		sscanf(argv2,"%hx",&num16);
-		dev_info->hw_major_version = num16;
-	}
-	else if (strcmp(argv1, "hwminor") == 0)
-	{
-		sscanf(argv2,"%hx",&num16);
-		dev_info->hw_minor_version = num16;
-	}
-	else if (strcmp(argv1, "mac") == 0)
-	{
-		memset(dev_info->mac, 0x00, sizeof(dev_info->mac));
-		error = utili_str_to_mac(argv2, dev_info->mac);
-		if (error < 0)
-		{
-			return -1;
-		}
-	}
-	else if (strcmp(argv1, "name") == 0)
-	{
-		memset(dev_info->product_name, 0x00, sizeof(dev_info->product_name));
-		strncpy(dev_info->product_name, argv2, 16);
-	}
-	else if (strcmp(argv1, "binformatver") == 0)
-	{
-		sscanf(argv2,"%hx",&num16);
-		dev_info->bin_format_version = num16;
-	}
-	else if (strcmp(argv1, "flag") == 0)
-	{
-		if (strcmp(argv2, "crc") == 0 )
-		{
-			dev_info->flag = 1;
-		}
-		else if (strcmp(argv2, "nocrc") == 0)
-		{
-			dev_info->flag = 0;
-		}
-		else
-		{
-			return -1;
-		}
-	}
-	else if (strcmp(argv1, "sn") == 0)
-	{
-		memset(dev_info->sn, 0x00, sizeof(dev_info->sn));
-		strncpy(dev_info->sn, argv2, 32);
-	}
-	else if (strcmp(argv1, "crc") == 0)
-	{
-		if (strcmp(argv2, "256") == 0)
-		{
-			error = ct_dev_crc256(dev_info, &crc);
-			if (error < 0)
-			{
-				printf("Crc256 calculate error\n");
-			}
-			else
-			{
-				dev_info->crc256 = crc;
-			}
-		}
-		else if (strcmp(argv2, "4k") == 0)
-		{
-			error = ct_dev_crc4k(dev_info, &crc);
-			if (error < 0)
-			{
-				printf("Crc4k calculate error\n");
-			}
-			else
-			{
-				dev_info->crc4k = crc;
-			}
-		}
-		else
-		{
-			return -1;
-		}
+		dev_info->flag = 0;
 	}
 	else
 	{
 		return -1;
 	}
 
-	return 0;
 }
 
+static void __dev_info_sn_parse(ct_char *argv, ct_device_info_t *dev_info)
+{
+	memset(dev_info->sn, 0x00, sizeof(dev_info->sn));
+	strncpy(dev_info->sn, argv, 32);
+}
+
+static void __dev_info_crc_parse(ct_char *argv, ct_device_info_t *dev_info)
+{
+	ct_uint16 crc = 0;
+	if (strcmp(argv, "256") == 0)
+	{
+		error = ct_dev_crc256(dev_info, &crc);
+		if (error < 0)
+		{
+			printf("Crc256 calculate error\n");
+		}
+		else
+		{
+			dev_info->crc256 = crc;
+		}
+	}
+	else if (strcmp(argv, "4k") == 0)
+	{
+		error = ct_dev_crc4k(dev_info, &crc);
+		if (error < 0)
+		{
+			printf("Crc4k calculate error\n");
+		}
+		else
+		{
+			dev_info->crc4k = crc;
+		}
+	}
+	else
+	{
+		;
+	}
+
+}
+
+#endif
+#if 1
 static void __dev_info_show_all(ct_device_info_t dev_info)
 {
 
@@ -653,165 +649,181 @@ static void __dev_info_show_all(ct_device_info_t dev_info)
 	printf("\n");
 	printf("%03x(%2dB) %-25s:0x%04x\n", __device_info.bin_format_version_ofs, __device_info.bin_format_version_len, "bin_format_version", dev_info.bin_format_version);
 	printf("%03x(%2dB) %-25s:%s\n", __device_info.flag_ofs, __device_info.flag_len, "flag", (dev_info.flag) ? "crc" : "nocrc");
-
+		
 	printf("%03x(%2dB) %-25s:", __device_info.sn_ofs, __device_info.sn_len, "sn");
 	printf("%s\n", dev_info.sn);
 	printf("%03x(%2dB) %-25s:0x%04x\n", __device_info.crc4k_ofs, __device_info.crc4k_len, "crc4k", dev_info.crc4k);
 
 }
-static void __dev_info_show(char *argv, ct_device_info_t dev_info)
+static void __dev_info_magic_show(ct_device_info_t dev_info)
 {
-
-	if (strcmp(argv, "magic") == 0)
-	{
-		printf("0x%08x\n", dev_info.magic_number);
-	}
-	else if (strcmp(argv, "content") == 0)
-	{
-		printf("0x%04x\n", dev_info.content);
-	}
-	else if (strcmp(argv, "length") == 0)
-	{
-		printf("0x%04x\n", dev_info.length);
-	}
-	else if (strcmp(argv, "device") == 0)
-	{
-		printf("0x%04x\n", dev_info.device_id);
-	}
-	else if (strcmp(argv, "hwtype") == 0)
-	{
-		printf("0x%04x\n", dev_info.hw_type);
-	}
-	else if (strcmp(argv, "hwmajor") == 0)
-	{
-		printf("0x%04x\n", dev_info.hw_major_version);
-	}
-	else if (strcmp(argv, "hwminor") == 0)
-	{
-		printf("0x%04x\n", dev_info.hw_minor_version);
-	}
-	else if (strcmp(argv, "mac") == 0)
-	{
-		printf("%02x:%02x:%02x:%02x:%02x:%02x\n", dev_info.mac[0], dev_info.mac[1]
-				, dev_info.mac[2], dev_info.mac[3], dev_info.mac[4], dev_info.mac[5]);
-	}
-	else if (strcmp(argv, "name") == 0)
-	{
-		printf("%s\n", dev_info.product_name);
-	}
-	else if (strcmp(argv, "crc256") == 0)
-	{
-		printf("0x%04x\n", dev_info.crc256);
-	}
-	else if (strcmp(argv, "binformatver") == 0)
-	{
-		printf("0x%04x\n", dev_info.bin_format_version);
-	}
-	else if (strcmp(argv, "flag") == 0)
-	{
-		printf("%s\n", ((dev_info.flag) ? "crc" : "nocrc"));
-	}
-	else if (strcmp(argv, "sn") == 0)
-	{
-		printf("%s\n", dev_info.sn);
-	}
-	else if (strcmp(argv, "crc4k") == 0)
-	{
-		printf("0x%04x\n", dev_info.crc4k);
-	}
-	else
-	{
-		printf("Fail parameter error\n");
-	}
-
+	printf("0x%08x\n", dev_info.magic_number);
 }
+
+static void __dev_info_content_show(ct_device_info_t dev_info)
+{
+	printf("0x%04x\n", dev_info.content);
+}
+
+static void __dev_info_length_show(ct_device_info_t dev_info)
+{
+	printf("0x%04x\n", dev_info.length);
+}
+
+static void __dev_info_device_show(ct_device_info_t dev_info)
+{
+	printf("0x%04x\n", dev_info.device_id);
+}
+
+static void __dev_info_hwtype_show(ct_device_info_t dev_info)
+{
+	printf("0x%04x\n", dev_info.hw_type);
+}
+
+static void __dev_info_hwmajor_show(ct_device_info_t dev_info)
+{
+	printf("0x%04x\n", dev_info.hw_major_version);
+}
+
+static void __dev_info_hwminor_show(ct_device_info_t dev_info)
+{
+	printf("0x%04x\n", dev_info.hw_minor_version);
+}
+
+static void __dev_info_mac_show(ct_device_info_t dev_info)
+{
+	printf("%02x:%02x:%02x:%02x:%02x:%02x\n", dev_info.mac[0], dev_info.mac[1]
+			, dev_info.mac[2], dev_info.mac[3], dev_info.mac[4], dev_info.mac[5]);
+}
+
+static void __dev_info_name_show(ct_device_info_t dev_info)
+{
+	printf("%s\n", dev_info.product_name);
+}
+
+static void __dev_info_crc256_show(ct_device_info_t dev_info)
+{
+	printf("0x%04x\n", dev_info.crc256);
+}
+
+static void __dev_info_binformatver_show(ct_device_info_t dev_info)
+{
+	printf("0x%04x\n", dev_info.bin_format_version);
+}
+
+static void __dev_info_flag_show(ct_device_info_t dev_info)
+{
+	printf("%s\n", ((dev_info.flag) ? "crc" : "nocrc"));
+}
+
+static void __dev_info_sn_show(ct_device_info_t dev_info)
+{
+	printf("%s\n", dev_info.sn);
+}
+
+static void __dev_info_crc4k_show(ct_device_info_t dev_info)
+{
+	printf("0x%04x\n", dev_info.crc4k);
+}
+
 #endif
 
-ct_int32 main(int argc, char **argv)
+
+typedef void (*__dev_cmd_entry_read_cb)( ct_device_info_t dev_info);
+typedef void (*__dev_cmd_entry_prase_cb)(char *argv1, ct_device_info_t dev_info);
+
+
+
+typedef struct {
+	char *key;
+	__dev_cmd_entry_cb read;
+	__dev_cmd_entry_prase_cb parse;
+} dev_cmd_entry;
+
+static dev_cmd_entry __dev_cmd_entries[] = {
+	{"magic", __dev_info_magic_show, __dev_info_magic_parse},
+	{"content", __dev_info_content_show, __dev_info_content_parse},
+	{"length", __dev_info_length_show, __dev_info_length_parse},
+	{"device", __dev_info_device_show, __dev_info_device_parse},
+	{"hwtype", __dev_info_hwtype_show, __dev_info_hwtype_parse},
+	{"hwmajor", __dev_info_hwmajor_show, __dev_info_hwmajor_parse},
+	{"hwminor", __dev_info_hwminor_show, __dev_info_hwminor_parse},
+	{"mac", __dev_info_mac_show, __dev_info_mac_parse},
+	{"name", __dev_info_name_show, __dev_info_name_parse},
+	{"binformatver", __dev_info_binformatver_show, __dev_info_binformatver_parse},
+	{"flag", __dev_info_flag_show, __dev_info_flag_parse},
+	{"sn", __dev_info_sn_show, __dev_info_sn_parse},
+};
+int main(int argc, char ** argv)
 {
 	ct_int32 error = 0;
 	ct_uint32 length = 0;
+	int idx = 0;
+	int find = 0;
 	ct_char *dev_name = NULL;
 	ct_device_info_t dev_info;
 	ct_char dev_path[128];
-	ct_device_info_op_e option = CT_DEVICE_INFO_DUMP_E;
-
-	if (argc == 2 && (strcmp(argv[1], "?") != 0))
-	{
-		option = CT_DEVICE_INFO_DUMP_E;
-	}
-	else if ((argc == 4) && (strcmp(argv[2], "read") == 0) && (strcmp(argv[3], "?") != 0))
-	{
-		option = CT_DEVICE_INFO_READ_E;
-	}
-	else if ((argc == 5) && (strcmp(argv[2], "write") == 0) && (strcmp(argv[3], "?") != 0) && (strcmp(argv[4], "?") != 0))
-	{
-		option = CT_DEVICE_INFO_WRITE_E;
-	}
-	else
-	{
-		device_info_help();
-		return 0;
-	}
 
 	dev_name = argv[1];
 	length = strlen(DEV_MTD) + strlen(dev_name);
 	memset(dev_path, 0, sizeof(dev_path));
 	snprintf(dev_path, length + 1, "%s%s", DEV_MTD, dev_name);
-
+	
 	memset(&dev_info, 0, sizeof(ct_device_info_t));
 	error = ct_dev_info_get(dev_path, &dev_info);
 	if (error < 0)
 	{
 		return -1;
 	}
-
+	
 	error = __dev_info_magic_number_check(dev_info.magic_number);
 	if (error < 0)
 	{
 		printf("Not device partition\n");
 		return -1;
 	}
-
-	switch (option) {
-		case CT_DEVICE_INFO_DUMP_E:
-			__dev_info_show_all(dev_info);
-			break;
-		case CT_DEVICE_INFO_READ_E:
-			__dev_info_show(argv[3], dev_info);
-			break;
-		case CT_DEVICE_INFO_WRITE_E:
-			error = __dev_info_cmd_parse(argv[3], argv[4], &dev_info);
-			if (error < 0)
-			{
-				printf("Fail parameter error\n");
-				return -1;
-			}
-
-			error = ct_dev_info_set(dev_path, &dev_info);
-			if (error < 0)
-			{
-				printf("Fail\n");
-				return -1;
-			}
-			else
-			{
-				printf("Success\n");
-			}
-
-			break;
-		default:
-			device_info_help();
-			break;
+	
+	if (argc == 2)
+	{
+		__dev_info_show_all();
+		return 0;
 	}
 
+	for (idx = 0; idx < (sizeof(__dev_cmd_entries)/sizeof(dev_cmd_entry)); idx++)
+	{
+		if (strcmp(argv[3], __dev_cmd_entries[idx].key) == 0)
+		{
+			find = 1;
+			if (strcmp(argv[2], "read") == 0)
+			{
+				__dev_cmd_entries[idx].read(dev_info);
+			}
+			else if(strcmp(argv[2], "write") == 0)
+			{
+				__dev_cmd_entries[idx].parse(argv[4], dev_info);
+				error = ct_dev_info_set(dev_path, &dev_info);
+				if (error < 0)
+				{
+					printf("Fail\n");
+					return -1;
+				}
+				else
+				{
+					printf("Success\n");
+				}
+				}
+				else
+				{
+					device_info_help();
+				}
+		}
+	}
+
+	if (find == 0)
+	{
+		device_info_help();
+	}
 
 	return 0;
 }
-
-
-
-
-
-
 
